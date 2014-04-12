@@ -1,0 +1,132 @@
+
+static void notify_message (gchar *message)
+{
+NotifyNotification *note = notify_notification_new ("Power A : Gnome Power Management", message, NULL);
+
+notify_notification_set_timeout (note, 10000);
+notify_notification_set_urgency (note, NOTIFY_URGENCY_CRITICAL);
+notify_notification_show (note, NULL);
+}
+
+static void notify_battery_information (gint state, gint percentage, gchar *time_string)
+{
+gchar message[STR_LTH], pct[STR_LTH], ti[STR_LTH];
+
+g_stpcpy (message, "Battery ");
+
+if (state == CHARGED)
+g_strlcat (message, "charged!", STR_LTH);
+else {
+if (state == CHARGING)
+g_strlcat (message, "charging!", STR_LTH);
+else {
+g_sprintf (pct, "has %i\% remaining", percentage);
+g_strlcat (message, pct, STR_LTH);
+}
+
+if (time_string[0] != '\0') {
+g_sprintf (ti, "\n%s", time_string);
+g_strlcat (message, ti, STR_LTH);
+}
+}
+
+NotifyNotification *note = notify_notification_new ("Power A : Gnome Power Management", message, get_icon_name (state, percentage));
+
+if (state == LOW_POWER) {
+notify_notification_set_timeout (note, NOTIFY_EXPIRES_NEVER);
+notify_notification_set_urgency (note, NOTIFY_URGENCY_CRITICAL);
+}
+else
+notify_notification_set_timeout (note, 10000);
+
+notify_notification_show (note, NULL);
+}
+
+static void set_tooltip_and_icon (GtkStatusIcon *tray_icon, gint state, gint percentage, gchar *time_string)
+{
+gchar tooltip[STR_LTH], pct[STR_LTH], ti[STR_LTH];
+
+if (state == MISSING)
+g_stpcpy (tooltip, "No battery present!");
+else {
+g_stpcpy (tooltip, "Battery ");
+
+if (state == CHARGING)
+g_strlcat (tooltip, "charging ", STR_LTH);
+else if (state == CHARGED)
+g_strlcat (tooltip, "charged ", STR_LTH);
+
+g_sprintf (pct, "(%i\%)", percentage);
+g_strlcat (tooltip, pct, STR_LTH);
+
+if (time_string[0] != '\0') {
+g_sprintf (ti, "\n%s", time_string);
+g_strlcat (tooltip, ti, STR_LTH);
+}
+}
+
+gtk_status_icon_set_tooltip_text (tray_icon, tooltip);
+gtk_status_icon_set_from_icon_name (tray_icon, get_icon_name (state, percentage));
+}
+
+static gchar* get_time_string (gint minutes)
+{
+static gchar time_string[STR_LTH];
+gint hours;
+
+if (minutes < 0) {
+time_string[0]='\0';
+return time_string;
+}
+
+hours = minutes / 60;
+minutes = minutes - (60 * hours);
+
+if (hours > 0)
+g_sprintf(time_string, "%2d hours, %2d minutes remaining", hours, minutes);
+else
+g_sprintf(time_string, "%2d minutes remaining", minutes);
+
+return time_string;
+}
+
+static gchar* get_icon_name (gint state, gint percentage)
+{
+static gchar icon_name[STR_LTH];
+
+if (icon_type == BATTERY_ICON_NOTIFICATION)
+g_stpcpy (icon_name, "notification-battery");
+else
+g_stpcpy (icon_name, "battery");
+
+if (state == MISSING) {
+if (icon_type == BATTERY_ICON_NOTIFICATION)
+g_strlcat (icon_name, "-empty", STR_LTH);
+else
+g_strlcat (icon_name, "-missing", STR_LTH);
+} else {
+if (icon_type == BATTERY_ICON_NOTIFICATION) {
+if (percentage < 20) g_strlcat (icon_name, "-020", STR_LTH);
+else if (percentage < 40) g_strlcat (icon_name, "-040", STR_LTH);
+else if (percentage < 60) g_strlcat (icon_name, "-060", STR_LTH);
+else if (percentage < 80) g_strlcat (icon_name, "-080", STR_LTH);
+else g_strlcat (icon_name, "-100", STR_LTH);
+
+if (state == CHARGING) g_strlcat (icon_name, "-plugged", STR_LTH);
+else if (state == CHARGED) g_strlcat (icon_name, "-plugged", STR_LTH);
+} else {
+if (percentage < 20) g_strlcat (icon_name, "-caution", STR_LTH);
+else if (percentage < 40) g_strlcat (icon_name, "-low", STR_LTH);
+else if (percentage < 80) g_strlcat (icon_name, "-good", STR_LTH);
+else g_strlcat (icon_name, "-full", STR_LTH);
+
+if (state == CHARGING) g_strlcat (icon_name, "-charging", STR_LTH);
+else if (state == CHARGED) g_strlcat (icon_name, "-charged", STR_LTH);
+}
+}
+
+if (icon_type == BATTERY_ICON_SYMBOLIC)
+g_strlcat (icon_name, "-symbolic", STR_LTH);
+
+return icon_name;
+}

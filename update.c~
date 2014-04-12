@@ -1,0 +1,31 @@
+#include <gtk/gtk.h>
+
+int
+main (int argc, char** argv)
+{
+GtkWidget* window;
+GtkWidget* button;
+gint i;
+
+gtk_init (&argc, &argv);
+
+for (i = 0; i < 10; i++)
+{
+window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+button = gtk_spin_button_new_with_range (0, 10, 1);
+gtk_spin_button_set_value (GTK_SPIN_BUTTON (button), i);
+gtk_container_add (GTK_CONTAINER (window), button);
+gtk_container_set_border_width (GTK_CONTAINER (window), 30);
+
+gtk_widget_show_all (window);
+
+while (gtk_events_pending())
+{
+// g_usleep (1);
+gtk_main();
+}
+g_usleep (5000000);
+
+gtk_widget_destroy (window);
+}
+}

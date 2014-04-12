@@ -1,0 +1,39 @@
+#include<gtk/gtk.h>
+
+void pass_entered(GtkWidget *button,gpointer entry)
+{
+	char pass[10];
+	pass=gtk_entry_get_text(GTK_ENTRY(entry));
+	g_print("%s \n",pass);
+	gtk_editable_copy_clipboard(GTK_CLIPBOARD(entry));
+	if(pass=='ash') gtk_main_quit();
+}
+int main(int argc,char *argv[])
+{
+	gtk_init(&argc,&argv);
+	GtkWidget *win,*entry,*b1,*label,*frame;
+	win=gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_title(GTK_WINDOW(win),"Power A: GNOME Power Management");
+	gtk_widget_set_size_request(win,240,100);
+	gtk_window_set_position(GTK_WINDOW(win),GTK_WIN_POS_CENTER);
+	gtk_window_set_resizable(GTK_WINDOW(win), 0);
+	frame=gtk_fixed_new();
+
+	label=gtk_label_new("Enter your system password::");	
+	gtk_fixed_put(GTK_FIXED(frame),label,20,20);
+
+	entry=gtk_entry_new();
+	gtk_widget_set_size_request(entry,40,20);
+	gtk_fixed_put(GTK_FIXED(frame),entry,20,60);
+	b1=gtk_button_new_with_label("go");		
+	gtk_widget_set_size_request(b1,20,20);	
+	gtk_fixed_put(GTK_FIXED(frame),b1,180,60);
+
+	gtk_container_add(GTK_CONTAINER(win),frame);
+	g_signal_connect(b1,"clicked",G_CALLBACK(pass_entered),entry);
+	g_signal_connect(entry,"activate",G_CALLBACK(pass_entered),entry);	
+	g_signal_connect(win,"destroy",G_CALLBACK(gtk_main_quit),entry);
+	gtk_widget_show_all(win);
+	gtk_main();
+	return 0;
+}

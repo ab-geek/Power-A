@@ -1,0 +1,35 @@
+#include <gtk/gtk.h>
+#include <stdio.h>
+#include <string.h>
+int main(int argc,char *argv[])
+{
+	gtk_init(&argc,&argv);
+	char ch;
+	char array[1000];
+	gchar *bufftxt;
+	FILE *file;
+	GtkWidget *view;GtkTextBuffer *buff;
+	view = gtk_text_view_new();
+	GtkWidget  *window;
+	GtkWidget *label;
+	label=gtk_label_new("hi");
+	window=gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	//buff = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
+	file=fopen("a","r");
+	while((ch = fgetc(file)) != EOF)
+		{
+			 g_print("%c",ch);
+			
+			strcat(array ,&ch);
+		}
+	bufftxt=g_strdup_printf((gchar *)array);
+	fclose(file);
+	
+	gtk_text_buffer_set_text(buff,bufftxt,-1);
+	gtk_label_set_text(GTK_LABEL(label),buff);
+	gtk_container_add(GTK_CONTAINER(window),label);
+	
+	gtk_widget_show_all(window);
+	gtk_main();
+	return 0;
+}

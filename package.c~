@@ -1,0 +1,439 @@
+#include <gtk/gtk.h>
+#include <string.h>
+
+static gboolean on_window_delete_event (GtkWidget*, GdkEvent*, gpointer);
+GtkResponseType confirm_quit_dialog();
+void closekde();
+
+GtkWidget *win, *fix, *label, *button, *image, *win2, *radio1, *radio2;
+GSList *group;
+
+FILE *progressfile;
+int progress=0;
+
+gboolean gtk_toggle_button_get_active   (GtkToggleButton *toggle_button);
+
+static gboolean
+time_handler(GtkWidget *widget)
+{
+
+if ( ( progressfile = fopen( "/tmp/progress", "r" )) != NULL )
+{
+   fscanf(progressfile, "%d", &progress);
+}
+
+if ( progress==0 )
+{
+
+gtk_container_remove (GTK_CONTAINER (win2), fix);
+fix = gtk_fixed_new ();
+label = gtk_label_new ("Installation status");
+gtk_fixed_put (GTK_FIXED(fix), label, 140, 50);
+gtk_container_add (GTK_CONTAINER (win2), fix);
+gtk_widget_show_all (win2);
+image = gtk_image_new_from_file("/tmp/pictures/progress0.png");
+gtk_fixed_put (GTK_FIXED(fix), GTK_WIDGET(image), 110, 120);
+gtk_container_add (GTK_CONTAINER (win2), fix);
+gtk_widget_show_all (win2);
+
+}
+
+else if ( progress==1 )
+{
+
+gtk_container_remove (GTK_CONTAINER (win2), fix);
+fix = gtk_fixed_new ();
+label = gtk_label_new ("Installation status");
+gtk_fixed_put (GTK_FIXED(fix), label, 140, 50);
+gtk_container_add (GTK_CONTAINER (win2), fix);
+gtk_widget_show_all (win2);
+image = gtk_image_new_from_file("/tmp/pictures/progress1.png");
+gtk_fixed_put (GTK_FIXED(fix), GTK_WIDGET(image), 110, 120);
+gtk_container_add (GTK_CONTAINER (win2), fix);
+gtk_widget_show_all (win2);
+
+}
+
+else if ( progress==2 )
+{
+
+gtk_container_remove (GTK_CONTAINER (win2), fix);
+fix = gtk_fixed_new ();
+label = gtk_label_new ("Installation status");
+gtk_fixed_put (GTK_FIXED(fix), label, 140, 50);
+gtk_container_add (GTK_CONTAINER (win2), fix);
+gtk_widget_show_all (win2);
+image = gtk_image_new_from_file("/tmp/pictures/progress2.png");
+gtk_fixed_put (GTK_FIXED(fix), GTK_WIDGET(image), 110, 120);
+gtk_container_add (GTK_CONTAINER (win2), fix);
+gtk_widget_show_all (win2);
+
+}
+
+else if ( progress==3 )
+{
+
+gtk_container_remove (GTK_CONTAINER (win2), fix);
+fix = gtk_fixed_new ();
+label = gtk_label_new ("Installation status");
+gtk_fixed_put (GTK_FIXED(fix), label, 140, 50);
+gtk_container_add (GTK_CONTAINER (win2), fix);
+gtk_widget_show_all (win2);
+image = gtk_image_new_from_file("/tmp/pictures/progress3.png");
+gtk_fixed_put (GTK_FIXED(fix), GTK_WIDGET(image), 110, 120);
+gtk_container_add (GTK_CONTAINER (win2), fix);
+gtk_widget_show_all (win2);
+
+}
+
+else if ( progress==4 )
+{
+
+gtk_container_remove (GTK_CONTAINER (win2), fix);
+fix = gtk_fixed_new ();
+label = gtk_label_new ("Installation status");
+gtk_fixed_put (GTK_FIXED(fix), label, 140, 50);
+gtk_container_add (GTK_CONTAINER (win2), fix);
+gtk_widget_show_all (win2);
+image = gtk_image_new_from_file("/tmp/pictures/progress4.png");
+gtk_fixed_put (GTK_FIXED(fix), GTK_WIDGET(image), 110, 120);
+gtk_container_add (GTK_CONTAINER (win2), fix);
+gtk_widget_show_all (win2);
+
+}
+
+else if ( progress==5 )
+{
+
+gtk_container_remove (GTK_CONTAINER (win2), fix);
+fix = gtk_fixed_new ();
+label = gtk_label_new ("Installation status");
+gtk_fixed_put (GTK_FIXED(fix), label, 140, 50);
+gtk_container_add (GTK_CONTAINER (win2), fix);
+gtk_widget_show_all (win2);
+image = gtk_image_new_from_file("/tmp/pictures/progress5.png");
+gtk_fixed_put (GTK_FIXED(fix), GTK_WIDGET(image), 110, 120);
+gtk_container_add (GTK_CONTAINER (win2), fix);
+gtk_widget_show_all (win2);
+
+}
+
+else if ( progress==6 )
+{
+
+gtk_container_remove (GTK_CONTAINER (win2), fix);
+fix = gtk_fixed_new ();
+label = gtk_label_new ("Installation status");
+gtk_fixed_put (GTK_FIXED(fix), label, 140, 50);
+gtk_container_add (GTK_CONTAINER (win2), fix);
+gtk_widget_show_all (win2);
+image = gtk_image_new_from_file("/tmp/pictures/progress6.png");
+gtk_fixed_put (GTK_FIXED(fix), GTK_WIDGET(image), 110, 120);
+gtk_container_add (GTK_CONTAINER (win2), fix);
+gtk_widget_show_all (win2);
+
+}
+
+else if ( progress==7 )
+{
+
+gtk_container_remove (GTK_CONTAINER (win2), fix);
+fix = gtk_fixed_new ();
+label = gtk_label_new ("Installation status");
+gtk_fixed_put (GTK_FIXED(fix), label, 140, 50);
+gtk_container_add (GTK_CONTAINER (win2), fix);
+gtk_widget_show_all (win2);
+image = gtk_image_new_from_file("/tmp/pictures/progress7.png");
+gtk_fixed_put (GTK_FIXED(fix), GTK_WIDGET(image), 110, 120);
+gtk_container_add (GTK_CONTAINER (win2), fix);
+gtk_widget_show_all (win2);
+
+}
+
+else if ( progress==8 )
+{
+
+gtk_container_remove (GTK_CONTAINER (win2), fix);
+fix = gtk_fixed_new ();
+label = gtk_label_new ("Installation status");
+gtk_fixed_put (GTK_FIXED(fix), label, 140, 50);
+gtk_container_add (GTK_CONTAINER (win2), fix);
+gtk_widget_show_all (win2);
+image = gtk_image_new_from_file("/tmp/pictures/progress8.png");
+gtk_fixed_put (GTK_FIXED(fix), GTK_WIDGET(image), 110, 120);
+gtk_container_add (GTK_CONTAINER (win2), fix);
+gtk_widget_show_all (win2);
+
+}
+
+else if ( progress==9 )
+{
+
+gtk_container_remove (GTK_CONTAINER (win2), fix);
+fix = gtk_fixed_new ();
+label = gtk_label_new ("Installation status");
+gtk_fixed_put (GTK_FIXED(fix), label, 140, 50);
+gtk_container_add (GTK_CONTAINER (win2), fix);
+gtk_widget_show_all (win2);
+image = gtk_image_new_from_file("/tmp/pictures/progress9.png");
+gtk_fixed_put (GTK_FIXED(fix), GTK_WIDGET(image), 110, 120);
+gtk_container_add (GTK_CONTAINER (win2), fix);
+gtk_widget_show_all (win2);
+
+}
+
+else if ( progress>=10 )
+{
+
+gtk_container_remove (GTK_CONTAINER (win2), fix);
+fix = gtk_fixed_new ();
+label = gtk_label_new ("Installation complete successfully!");
+gtk_fixed_put (GTK_FIXED(fix), label, 105, 50);
+gtk_container_add (GTK_CONTAINER (win2), fix);
+gtk_widget_show_all (win2);
+image = gtk_image_new_from_file("/tmp/pictures/progress10.png");
+gtk_fixed_put (GTK_FIXED(fix), image, 110, 120);
+gtk_container_add (GTK_CONTAINER (win2), fix);
+gtk_widget_show_all (win2);
+label = gtk_label_new ("Click below to close the program");
+gtk_fixed_put (GTK_FIXED(fix), label, 70, 170);
+gtk_container_add (GTK_CONTAINER (win2), fix);
+gtk_widget_show_all (win2);
+button = gtk_button_new_with_label ("Close");
+g_signal_connect (G_OBJECT (button), "clicked",G_CALLBACK (chiudikde), (gpointer) win2);
+gtk_fixed_put (GTK_FIXED(fix), button, 180, 210);
+gtk_container_add (GTK_CONTAINER (win2), fix);
+gtk_widget_show_all (win2);
+
+}
+
+}
+
+void install()
+{
+
+  win2 = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_position (GTK_WINDOW(win2), GTK_WIN_POS_CENTER);
+  gtk_window_set_title (GTK_WINDOW(win2), "Installing...");
+  gtk_window_set_resizable (GTK_WINDOW(win2), FALSE);
+
+  gtk_widget_set_size_request (win2, 420, 280);
+
+  g_signal_connect (GTK_OBJECT(win), "destroy",
+                    G_CALLBACK (gtk_main_quit), win2);
+
+        g_signal_connect (G_OBJECT(win2), "delete-event",
+                        G_CALLBACK (on_window_delete_event), NULL);
+
+
+if (GTK_TOGGLE_BUTTON (radio1)->active)
+{
+   system( "touch /tmp/roompc" );
+}
+
+system( "rm /tmp/progress" );
+system( "sh slackupdate.sh &" );
+
+   g_timeout_add(240, time_handler, NULL);
+   gtk_widget_show_all(win2);
+
+}
+
+void closekde()
+{
+
+fclose(progressfile);
+exit(0);
+
+}
+
+
+int
+main (int argc, char *argv[])
+{
+   FILE *fp;
+   char ch, user[15];
+   char ut[]="root";
+   int x;
+   int flag=0;
+
+  gtk_init(&argc, &argv);
+
+
+      system( "whoami > /tmp/user.txt" );
+
+      if ( ( fp = fopen( "/tmp/user.txt", "r" )) != NULL )
+      {
+         fscanf(fp, "%s", &user);
+         fclose(fp);
+         system( "rm /tmp/user.txt" );
+         x = strcmp( user, ut);
+         if ( x == 0 )
+         {
+            flag=0;
+         }
+         else
+         {
+            flag=1;
+         }
+
+      }
+      else
+      {
+         flag=1;
+      }
+
+
+if ( flag == 0 )
+{
+
+  win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_position (GTK_WINDOW(win), GTK_WIN_POS_CENTER);
+  gtk_window_set_title (GTK_WINDOW(win), "Configurator post installation Slackware 12.1");
+  gtk_window_set_resizable (GTK_WINDOW(win), FALSE);
+
+
+  gtk_widget_set_size_request (win, 640, 480);
+
+  g_signal_connect (GTK_OBJECT(win), "destroy",
+                    G_CALLBACK (gtk_main_quit), win);
+
+        g_signal_connect (G_OBJECT(win), "delete-event",
+                        G_CALLBACK (on_window_delete_event), NULL);
+
+
+      if ( ( fp = fopen( "/tmp/confslackoutput", "r" )) != NULL )
+      {
+         fix = gtk_fixed_new ();
+
+
+         label = gtk_label_new ("THE INSTALLER HAS ALREADY EXECUTED");
+
+         gtk_fixed_put (GTK_FIXED(fix), label, 210, 200);
+         gtk_container_add (GTK_CONTAINER (win), fix);
+         gtk_widget_show_all (win);
+
+         button = gtk_button_new_with_label ("Close program");
+         g_signal_connect (G_OBJECT (button), "clicked",
+         G_CALLBACK (gtk_main_quit), (gpointer) win);
+
+         gtk_fixed_put (GTK_FIXED(fix), button, 265, 240);
+         gtk_container_add (GTK_CONTAINER (win), fix);
+         gtk_widget_show_all (win);
+
+      }
+      else
+      {
+
+
+         fix = gtk_fixed_new ();
+
+
+         label = gtk_label_new ("This program installs lacking packages in Slackware\nChoose on which computer to install packets:");
+
+         gtk_fixed_put (GTK_FIXED(fix), label, 10, 150);
+         gtk_container_add (GTK_CONTAINER (win), fix);
+         gtk_widget_show_all (win);
+
+
+
+
+         radio1 = gtk_radio_button_new_with_label (NULL, "Install on room computer");
+         gtk_fixed_put (GTK_FIXED(fix), radio1, 230, 200);
+         gtk_container_add (GTK_CONTAINER (win), fix);
+         gtk_widget_show_all (win);
+
+         group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio1));
+         radio2 = gtk_radio_button_new_with_label (group, "Install on lounge computer");
+
+         gtk_fixed_put (GTK_FIXED(fix), radio2, 230, 220);
+         gtk_container_add (GTK_CONTAINER (win), fix);
+         gtk_widget_show_all (win);
+
+
+         button = gtk_button_new_with_label ("Install and configure");
+         g_signal_connect (G_OBJECT (button), "clicked",
+         G_CALLBACK (install), (gpointer) win);
+
+         gtk_fixed_put (GTK_FIXED(fix), button, 265, 260);
+         gtk_container_add (GTK_CONTAINER (win), fix);
+         gtk_widget_show_all (win);
+      }
+}
+
+
+else
+{
+
+  win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_position (GTK_WINDOW(win), GTK_WIN_POS_CENTER);
+  gtk_window_set_title (GTK_WINDOW(win), "Configurator post installation Slackware 12.1");
+  gtk_window_set_resizable (GTK_WINDOW(win), FALSE);
+
+
+  gtk_widget_set_size_request (win, 640, 480);
+
+  g_signal_connect (GTK_OBJECT(win), "destroy",
+                    G_CALLBACK (gtk_main_quit), win);
+
+        g_signal_connect (G_OBJECT(win), "delete-event",
+                        G_CALLBACK (on_window_delete_event), NULL);
+
+  fix = gtk_fixed_new ();
+
+
+  label = gtk_label_new ("YOU MUST BE ROOT TO RUN THE INSTALLER");
+
+  gtk_fixed_put (GTK_FIXED(fix), label, 180, 200);
+   gtk_container_add (GTK_CONTAINER (win), fix);
+   gtk_widget_show_all (win);
+
+   button = gtk_button_new_with_label ("Close program");
+    g_signal_connect (G_OBJECT (button), "clicked",
+            G_CALLBACK (gtk_main_quit), (gpointer) win);
+
+
+  gtk_fixed_put (GTK_FIXED(fix), button, 265, 240);
+   gtk_container_add (GTK_CONTAINER (win), fix);
+   gtk_widget_show_all (win);
+
+
+}
+
+  gtk_main();
+
+  return 0;
+
+}
+
+static gboolean
+on_window_delete_event (GtkWidget *w, GdkEvent *e, gpointer user_data)
+{
+        if (confirm_quit_dialog() == GTK_RESPONSE_NO)
+        {
+                return TRUE;    /* do not quit */
+        }
+        else exit(0);      /* quit */
+}
+
+GtkResponseType
+confirm_quit_dialog()
+{
+        GtkWidget *dialog;
+        GtkResponseType response;
+       
+        /* create the dialog */
+        dialog = gtk_message_dialog_new (NULL,
+                    GTK_DIALOG_DESTROY_WITH_PARENT,
+                        GTK_MESSAGE_QUESTION,
+                        GTK_BUTTONS_YES_NO,
+                        "Are you sure you want to quit?");
+
+        gtk_window_set_title(GTK_WINDOW(dialog), "Really Quit?");
+       
+        /* run the dialog */
+        response = gtk_dialog_run (GTK_DIALOG (dialog));
+        gtk_widget_destroy (dialog);   
+       
+        return response;
+} 

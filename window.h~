@@ -1,0 +1,56 @@
+static void update_window_state (GtkWidget *label);
+static void send_info(gint state, gint percentage, gchar *time_string);
+static gboolean update_window(GtkWidget *label);
+
+void start_window()
+{
+GtkWidget *win,*fixed;
+GtkWidget *label;
+win=gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_title(GTK_WINDOW(win),"Power A: GNOME Power Management");
+	
+	gtk_window_set_position(GTK_WINDOW(win),GTK_WIN_POS_CENTER);
+	label=gtk_label_new("sd");	
+	g_signal_connect (G_OBJECT (win), "window-state-event", G_CALLBACK (state_event), win);
+	gtk_container_add(GTK_CONTAINER(win),label);
+	gtk_widget_show_all(win);
+	
+	update_window(label);
+	//gtk_widget_destroy(win);
+	g_timeout_add_seconds (10,update_window, (gpointer)label);
+
+	
+}
+
+	static gboolean update_window (GtkWidget *label)
+{
+static gboolean lock = FALSE;
+
+if (!lock) {
+lock = TRUE;
+update_window_state (label);
+lock = FALSE;
+} else
+g_fprintf (stderr, "Win update locked!?");
+
+return TRUE;
+}
+
+
+	static void update_window_state (GtkWidget *label)
+{
+	gint percentage,time;
+	gchar *time_string;
+	if (!get_battery_charge_info (&percentage, &time))
+return;
+	time_string = get_time_string (time);
+	
+	gchar *text=NULL;
+	text=(gchar*)g_malloc(25);
+	g_sprintf(text,"%d",percentage);
+	gtk_label_set_text(label,time_string);
+
+	//gtk_widget_show(fixed);
+	g_printf("%d",percentage);
+}
+

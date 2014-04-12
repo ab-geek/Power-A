@@ -1,0 +1,63 @@
+#include <glib.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <gtk/gtk.h>
+
+
+void timeout(gpointer frame)
+{
+   printf("Hello! - %d\n", rand());
+   //return TRUE;
+	
+	system("acpi>chargestate");
+	gchar *filename,*content;
+	gsize bytes;
+	GError *error = NULL;
+	GtkWidget *cont;
+	filename = g_build_filename (g_get_current_dir(), "list", NULL);
+
+	g_file_get_contents (filename, &content, &bytes, &error);
+	cont=gtk_label_new(NULL);
+	gtk_label_set_text(cont,content);
+
+		gtk_fixed_put(GTK_FIXED(frame),cont,70,395);
+	
+	//st=string[21];
+	
+		//gtk_widget_draw(GTK_WIDGET(battinfo), NULL);
+
+}
+
+int main(int argc, char **argv)
+{
+  	 GMainLoop *ml;
+	gtk_init(&argc,&argv);
+	GtkWidget *win,*frame,*label;
+	char str[100];
+	
+	win=gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_title(GTK_WINDOW(win),"timer");
+	gtk_widget_set_size_request(win,530,450);
+	gtk_window_set_position(GTK_WINDOW(win),GTK_WIN_POS_CENTER);
+	gtk_window_set_resizable(GTK_WINDOW(win), 0);
+	g_signal_connect(win,"destroy",G_CALLBACK(gtk_main_quit),NULL);
+	//gtk_window_set_icon(GTK_WINDOW(win),icon("Battery0.png"));
+	frame=gtk_fixed_new();
+  	
+
+  	// ml = g_main_loop_new(NULL, TRUE);
+   	//g_main_loop_run(ml);
+
+	/*GtkWidget *battinfo;
+	battinfo=gtk_label_new(NULL);
+	gtk_label_set_text(battinfo,str);
+	// GTK_LABEL(battinfo)=data->lab;
+ */
+	gtk_container_add(GTK_CONTAINER(win),frame);
+	g_timeout_add(100, timeout, gpointer frame);
+	gtk_widget_show_all(win);
+
+	
+	gtk_main();
+   return 0;
+}

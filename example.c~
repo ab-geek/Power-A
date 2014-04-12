@@ -1,0 +1,23 @@
+
+#include <libudev.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <math.h>
+#include <errno.h>
+#include "./powera.h"
+#include "./powera_option.h"
+#include "./powera_calculation.h"
+#include "./powera_bool.h"
+
+
+#include "./powera_sys.h"
+ void main()
+{
+	int percentage;
+	int timea;
+	get_battery_charge_info(percentage,timea);
+
+	printf("%d   %d",percentage,timea);
+
+}

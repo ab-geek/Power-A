@@ -1,0 +1,36 @@
+#!/bin/bash
+
+#run as root
+if [ ! $( id -u ) -eq 0 ]; then
+	exec gksu "${0}" # call this script as root
+	exit ${?}  # since we're 'execing' above, we wont reach this exit
+               # unless something goes .
+fi               
+echo ON > /sys/kernel/debug/vgaswitcheroo/switch
+
+echo 0 > /proc/sys/vm/laptop_mode
+echo 500 > /proc/sys/vm/dirty_writeback_centisecs
+echo 1 > /proc/sys/kernel/nmi_watchdog
+echo 0 > /sys/module/snd_hda_intel/parameters/power_save
+echo 0 > /sys/devices/system/cpu/sched_smt_power_savings
+echo 10 > /proc/sys/vm/dirty_ratio
+echo 5 > /proc/sys/vm/dirty_background_ratio
+echo max_performance > /sys/class/scsi_host/host0/link_power_management_policy
+ hdparm -B 200 -S 240 /dev/sda
+
+###  Radeon Driver power management
+echo high > /sys/class/drm/card0/device/power_profile
+
+for fdevice in /sys/bus/{pci,spi,i2c}/devices/*; do
+  echo on > $fdevice/power/control
+done
+
+for sdevice in /sys/class/scsi_host/host*/link_power_management_policy; do
+  echo max_performance > $sdevice
+done
+
+for usb in /sys/bus/usb/devices/*/power/autosuspend; do
+  echo 2 > $usb;
+done
+
+

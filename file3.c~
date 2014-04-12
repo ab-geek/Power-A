@@ -1,0 +1,44 @@
+#include <gtk/gtk.h>
+#include <stdio.h>
+int main(int argc, char **argv) 
+{
+    /*read text from file*/
+    FILE *fp;
+    char string[128];
+    if((fp = fopen("a", "r"))==NULL) {
+     printf("Cannot open file.\n");
+    }
+
+    while(!feof(fp)) {
+       fgets(string, 126, fp); 
+    }
+
+    fclose(fp);
+
+    /*create gtk widgets*/
+    GtkWidget *window;
+    GtkWidget *label;
+
+
+    //initialise gtk
+    gtk_init(&argc, &argv);
+
+    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+
+   label=gtk_label_new(NULL);
+
+
+
+    //pack button inside window
+    gtk_container_add(GTK_CONTAINER(window), label);
+
+    //display widgets
+
+    gtk_widget_show(label);
+    gtk_widget_show(window);
+
+    gtk_main();
+
+    return 0;
+}
+

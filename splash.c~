@@ -1,0 +1,50 @@
+#include <gtk/gtk.h>
+gboolean function_to_call(gpointer data){
+   GtkWidget * window_10_sec = (GtkWidget *) data;
+   gtk_widget_hide(window_10_sec);
+	gtk_main_quit();
+   return(FALSE);
+}
+static void destroy (GtkWidget*, gpointer);
+static gboolean delete_event (GtkWidget*, GdkEvent*, gpointer);
+int main (int argc,char *argv[])
+{
+  GtkWidget *window, *image;
+  gtk_init (&argc, &argv);
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_title (GTK_WINDOW (window), "A Splash Screen Demo");
+  gtk_container_set_border_width (GTK_CONTAINER (window), 0);
+  gtk_widget_set_size_request (window, 800, 480);
+  gtk_window_set_decorated(GTK_WINDOW (window), FALSE);
+  gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
+  gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
+
+  /* Connect the main window to the destroy and delete-event signals. */
+  g_signal_connect (G_OBJECT (window), "destroy",
+                    G_CALLBACK (destroy), NULL);
+  g_signal_connect (G_OBJECT (window), "delete_event",
+                    G_CALLBACK (delete_event), NULL);
+
+  image=gtk_image_new_from_file("pw.jpg");
+  gtk_container_add(GTK_CONTAINER(window), image);
+	
+  gtk_widget_show_all (window);
+	g_timeout_add (1000, function_to_call,window); 
+  gtk_main ();
+  return 0;
+}
+
+/* Stop the GTK+ main loop function when the window is destroyed. */
+static void destroy (GtkWidget *window,
+          gpointer data)
+{
+   gtk_main_quit ();
+}
+/* Return FALSE to destroy the widget. By returning TRUE, you can cancel
+  * a delete-event. This can be used to confirm quitting the application. */
+static gboolean delete_event (GtkWidget *window,
+               GdkEvent *event,
+               gpointer data)
+{
+    return FALSE;
+}

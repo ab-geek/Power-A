@@ -1,0 +1,18 @@
+void high_performance()
+{
+	system("scripts/highperformance.sh");
+
+	
+}
+void balanced()
+{
+system("echo 10 > /proc/sys/vm/dirty_ratio");
+system(" hdparm -B 200 -S 240 /dev/sda");
+}
+void power_saver()
+{
+	
+	system("scripts/powersave.sh");
+	
+}
+

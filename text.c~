@@ -1,0 +1,81 @@
+    /*
+    *File name: scrollbar.c
+    */
+
+    #include <gtk/gtk.h>
+	
+    #include <stdio.h>
+
+    /*– This function allows the program to exit properly when the window is closed –*/
+    gint destroyapp (GtkWidget *widget, gpointer gdata)
+    {
+    g_print ("Quitting…\n");
+    gtk_main_quit();
+    return (FALSE);
+    }
+
+    int main (int argc, char *argv[])
+    {
+    /*– Declare the GTK Widgets used in the program –*/
+    GtkWidget *window;
+    GtkWidget *text;
+    GtkWidget *table;
+    GtkWidget *hscrollbar;
+    GtkWidget *vscrollbar;
+
+    /*– Create some text to put into the text area –*/
+    gchar *buffer = "Line 1 \nLine 2 \nLine 3 \nLine 4 \nLine 5 \nLine 6 \nLine 7
+    \nLine 8 \nLine 9 \nLine 10 \nLine 11 \nLine 12";
+
+    /*– Initialize GTK –*/
+    gtk_init (&argc, &argv);
+
+    /*– Create the new window –*/
+    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+
+    /*– Create the packing table –*/
+    table = gtk_table_new(2, 2, FALSE);
+
+    /*– Create a text area –*/
+    text = gtk_text_new(NULL, NULL);
+
+    /*– Create the vertical and horizontal scrollbars –*/
+    hscrollbar = gtk_hscrollbar_new(GTK_TEXT (text) -> hadj);
+    vscrollbar = gtk_vscrollbar_new(GTK_TEXT (text) -> vadj);
+
+    /*– Set text area to be editable –*/
+    gtk_text_set_editable(GTK_TEXT (text), TRUE);
+
+    /*– Connect the window to the destroyapp function –*/
+    gtk_signal_connect(GTK_OBJECT(window), "delete_event”, GTK_SIGNAL_FUNC(destroyapp), NULL");
+
+    /*– Add some text to the window –*/
+    gtk_text_insert(GTK_TEXT(text), NULL, NULL, NULL, buffer, strlen(buffer));
+
+    /*– Add the items to the table –*/
+    gtk_table_attach(GTK_TABLE(table), text, 0, 1, 0, 1, GTK_EXPAND | GTK_SHRINK | GTK_FILL, GTK_EXPAND | GTK_SHRINK | GTK_FILL, 0, 0);
+    gtk_table_attach(GTK_TABLE(table), hscrollbar, 0, 1, 1, 2, GTK_EXPAND | GTK_FILL | GTK_SHRINK, GTK_FILL, 0, 0);
+    gtk_table_attach(GTK_TABLE(table), vscrollbar, 1, 2, 0, 1, GTK_FILL, GTK_EXPAND | GTK_FILL | GTK_SHRINK , 0, 0);
+
+    /*– Add the table to the window –*/
+    gtk_container_add(GTK_CONTAINER(window), table);
+
+    /*– Set window border to zero so that text area takes up the whole window –*/
+    gtk_container_border_width (GTK_CONTAINER (window), 0);
+
+    /*– Set the window title –*/
+    gtk_window_set_title(GTK_WINDOW (window), "Scrollbars");
+
+    /*– Display the widgets –*/
+    gtk_widget_show(text);
+    gtk_widget_show(table);
+    gtk_widget_show(hscrollbar);
+    gtk_widget_show(vscrollbar);
+    gtk_widget_show(window);
+
+    /*– Start the GTK event loop –*/
+    gtk_main();
+
+    /*– Return 0 if exit is successful –*/
+    return 0;
+    }

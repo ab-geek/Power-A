@@ -1,0 +1,8 @@
+Filesystem             Size   Used  Avail Use% Mounted on
+/dev/sda6               27G   4.0G    22G  16% /
+udev                   1.6G    13k   1.6G   1% /dev
+tmpfs                  618M   885k   617M   1% /run
+none                   5.3M      0   5.3M   0% /run/lock
+none                   1.6G   226k   1.6G   1% /run/shm
+/dev/sda3              221G    68G   153G  31% /media/01CCA74629AC78A0
+/dev/sda5              283G    74G   209G  27% /media/01CD0D6342E35310

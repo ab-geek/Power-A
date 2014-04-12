@@ -1,0 +1,14 @@
+present:                 yes
+design capacity:         4400 mWh
+last full capacity:      3768 mWh
+battery technology:      non-rechargeable
+design voltage:          11100 mV
+design capacity warning: 376 mWh
+design capacity low:     0 mWh
+cycle count:		  0
+capacity granularity 1:  100 mWh
+capacity granularity 2:  0 mWh
+model number:            Dell
+serial number:           2472
+battery type:            LION
+OEM info:                SIMPLO
